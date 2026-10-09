@@ -114,3 +114,21 @@ button:not(:disabled),
 .leaflet-tile-pane {
   filter: saturate(0.55) brightness(1.04) contrast(0.95);
 }
+.home-pin {
+  background: transparent !important;
+  border: 0 !important;
+}
+.home-pin > div {
+  width: 48px;
+  height: 48px;
+  border-radius: 9999px;
+  background: #ff385c;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+.home-pin svg {
+  max-width: none;
+}
