@@ -1,0 +1,47 @@
+"""Static catalog data shared by the API and the seed script."""
+
+CATEGORIES: list[dict[str, str]] = [
+    {"slug": "trending", "label": "Trending", "icon": "flame"},
+    {"slug": "beachfront", "label": "Beachfront", "icon": "umbrella"},
+    {"slug": "cabins", "label": "Cabins", "icon": "tent-tree"},
+    {"slug": "amazing_pools", "label": "Amazing pools", "icon": "waves"},
+    {"slug": "treehouses", "label": "Treehouses", "icon": "trees"},
+    {"slug": "amazing_views", "label": "Amazing views", "icon": "mountain"},
+    {"slug": "tiny_homes", "label": "Tiny homes", "icon": "house"},
+    {"slug": "iconic_cities", "label": "Iconic cities", "icon": "building-2"},
+    {"slug": "countryside", "label": "Countryside", "icon": "wheat"},
+    {"slug": "lakefront", "label": "Lakefront", "icon": "sailboat"},
+    {"slug": "tropical", "label": "Tropical", "icon": "palmtree"},
+    {"slug": "skiing", "label": "Skiing", "icon": "mountain-snow"},
+    {"slug": "design", "label": "Design", "icon": "pen-tool"},
+    {"slug": "mansions", "label": "Mansions", "icon": "castle"},
+]
+CATEGORY_SLUGS = {c["slug"] for c in CATEGORIES}
+
+AMENITIES: list[tuple[str, str]] = [
+    ("Wifi", "wifi"),
+    ("Kitchen", "utensils"),
+    ("Washer", "washing-machine"),
+    ("Dryer", "wind"),
+    ("Air conditioning", "snowflake"),
+    ("Heating", "thermometer"),
+    ("Dedicated workspace", "laptop"),
+    ("TV", "tv"),
+    ("Hair dryer", "sparkles"),
+    ("Iron", "shirt"),
+    ("Pool", "waves"),
+    ("Hot tub", "bath"),
+    ("Free parking", "car"),
+    ("EV charger", "plug-zap"),
+    ("Crib", "baby"),
+    ("Gym", "dumbbell"),
+    ("BBQ grill", "flame"),
+    ("Breakfast", "coffee"),
+    ("Indoor fireplace", "flame-kindling"),
+    ("Pets allowed", "paw-print"),
+    ("Beach access", "umbrella"),
+    ("Lake access", "sailboat"),
+    ("Ski-in/ski-out", "mountain-snow"),
+    ("Smoke alarm", "bell-ring"),
+    ("Patio or balcony", "sun"),
+]
