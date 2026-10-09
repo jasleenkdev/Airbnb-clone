@@ -7,47 +7,57 @@ import type { ListingCard, ListingQuery } from "@/types";
 
 const PAGE_SIZE = 20;
 
+interface State {
+  items: ListingCard[];
+  page: number;
+  pages: number;
+  total: number;
+  loading: boolean;
+  error: string | null;
+}
+
 /**
- * Paginated listing search. The caller should remount (via `key`) when the query changes,
- * so state always starts fresh for a new search.
+ * Paginated listing search ("Show more" / infinite scroll). The caller should remount
+ * (via `key`) when the query changes, so state always starts fresh for a new search.
  */
 export function useListings(query: ListingQuery) {
-  const [items, setItems] = useState<ListingCard[]>([]);
-  const [page, setPage] = useState(0);
-  const [pages, setPages] = useState(1);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const load = useCallback(
-    async (nextPage: number) => {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await api.listings({ ...query, page: nextPage, page_size: PAGE_SIZE });
-        setItems((prev) => (nextPage === 1 ? res.items : [...prev, ...res.items]));
-        setPage(res.page);
-        setPages(res.pages);
-        setTotal(res.total);
-      } catch (err) {
-        setError(errorMessage(err));
-      } finally {
-        setLoading(false);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [JSON.stringify(query)],
-  );
+  const queryKey = JSON.stringify(query);
+  const [state, setState] = useState<State>({ items: [], page: 0, pages: 1, total: 0, loading: true, error: null });
+  const [request, setRequest] = useState({ page: 1, attempt: 0 });
 
   useEffect(() => {
-    // Data fetching on mount; state updates happen after the await.
-    void load(1);
-  }, [load]);
+    let cancelled = false;
+    api
+      .listings({ ...(JSON.parse(queryKey) as ListingQuery), page: request.page, page_size: PAGE_SIZE })
+      .then((res) => {
+        if (cancelled) return;
+        setState((s) => ({
+          items: request.page === 1 ? res.items : [...s.items, ...res.items],
+          page: res.page,
+          pages: res.pages,
+          total: res.total,
+          loading: false,
+          error: null,
+        }));
+      })
+      .catch((err) => !cancelled && setState((s) => ({ ...s, loading: false, error: errorMessage(err) })));
+    return () => {
+      cancelled = true;
+    };
+  }, [queryKey, request]);
 
-  const hasMore = page < pages;
+  const hasMore = state.page < state.pages;
+
   const loadMore = useCallback(() => {
-    if (!loading && hasMore) void load(page + 1);
-  }, [hasMore, load, loading, page]);
+    if (state.loading || !hasMore) return;
+    setState((s) => ({ ...s, loading: true }));
+    setRequest({ page: state.page + 1, attempt: 0 });
+  }, [hasMore, state.loading, state.page]);
 
-  return { items, total, loading, error, hasMore, loadMore, retry: () => load(page + 1 || 1) };
+  const retry = useCallback(() => {
+    setState((s) => ({ ...s, loading: true, error: null }));
+    setRequest((r) => ({ page: r.page, attempt: r.attempt + 1 }));
+  }, []);
+
+  return { ...state, hasMore, loadMore, retry };
 }
