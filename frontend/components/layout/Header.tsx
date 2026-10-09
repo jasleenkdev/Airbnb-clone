@@ -171,7 +171,7 @@ export function Header() {
       </header>
 
       {expanded && (
-        <div className="animate-fade-in fixed inset-0 z-30 hidden bg-black/25 md:block" onClick={close} aria-hidden />
+        <div className="animate-fade-in fixed inset-0 z-[35] hidden bg-black/25 md:block" onClick={close} aria-hidden />
       )}
 
       <MobileSearch

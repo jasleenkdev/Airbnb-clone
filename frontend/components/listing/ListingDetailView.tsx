@@ -74,6 +74,7 @@ export function ListingDetailView() {
 
   return (
     <div className="mx-auto max-w-[1120px] px-6 pt-6 pb-28 md:px-10 md:pb-16 xl:px-0">
+      <title>{`${l.title} · ${l.city} · Airbnb Clone`}</title>
       <div className="mb-6 hidden items-end justify-between gap-4 md:flex">
         <h1 className="text-[26px] font-semibold">{l.title}</h1>
         <div className="flex shrink-0 gap-2 text-sm font-semibold">

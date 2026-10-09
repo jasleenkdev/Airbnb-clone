@@ -18,7 +18,8 @@ const TABS = [
 /** Airbnb-app style bottom tab bar (mobile only). */
 export function MobileNav() {
   const pathname = usePathname();
-  if (pathname.startsWith("/book/")) return null;
+  // Pages with their own fixed bottom action bar hide the tab bar, like the Airbnb app.
+  if (["/rooms/", "/book/", "/host/listings/"].some((p) => pathname.startsWith(p))) return null;
   return (
     <nav
       aria-label="Primary"

@@ -92,6 +92,7 @@ export function CategoryBar({ categories, active, onSelect, filterCount, onOpenF
       <button
         type="button"
         onClick={onOpenFilters}
+        aria-label={filterCount ? `Filters (${filterCount} active)` : "Filters"}
         className={cn(
           "relative flex shrink-0 items-center gap-2 rounded-xl border px-4 py-3.5 text-xs font-semibold transition hover:border-gray-900 hover:bg-gray-50",
           filterCount ? "border-gray-900 bg-gray-50" : "border-gray-300",

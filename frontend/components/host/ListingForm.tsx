@@ -180,7 +180,7 @@ export function ListingForm({ initial = EMPTY_LISTING, mode, onSubmit }: Listing
         )}
       </div>
 
-      <div className="fixed inset-x-0 bottom-16 z-30 border-t border-gray-200 bg-white md:bottom-0">
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-gray-200 bg-white">
         <div className="h-1.5 bg-gray-200">
           <div className="h-full bg-gray-900 transition-all" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
         </div>
