@@ -1,0 +1,26 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# Deploys the FastAPI backend. SQLite lives on the instance's ephemeral disk, so on the
+# free tier the database resets on every deploy/restart and is re-seeded automatically.
+services:
+  - type: web
+    name: airbnb-clone-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: APP_DATABASE_URL
+        value: sqlite:///./airbnb.db
+      - key: SEED_ON_STARTUP
+        value: "true"
+      # Your Vercel production URL, e.g. https://airbnb-clone.vercel.app (comma-separate several)
+      - key: CORS_ORIGINS
+        sync: false
+      # Also allow Vercel preview deployments
+      - key: CORS_ORIGIN_REGEX
+        value: https://.*\.vercel\.app
